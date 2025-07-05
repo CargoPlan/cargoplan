@@ -22,14 +22,7 @@ app.add_middleware(
 
 
 @app.get('/')
-async def app_root(session: AsyncSession = Depends(get_session)):
-    ship = Ship()
-    ship.rooms = {Room(type=RoomType.deck), Room(type=RoomType.deck), Room(type=RoomType.tweendeck)}
-
-    session.add(ship)
-
-    await session.commit()
-
+async def app_root():
     return {
         "status": "ok",
         "message": "pong",
