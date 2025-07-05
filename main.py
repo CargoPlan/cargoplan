@@ -1,6 +1,11 @@
+import asyncio
+
 import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+
+from config import settings
+from database_connector import init_models
 
 app = FastAPI()
 
@@ -22,5 +27,8 @@ async def app_root():
     }
 
 
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=5001, reload=True)
+if __name__ == '__main__':
+    if settings.INIT_MODELS:
+        asyncio.run(init_models())
+
+    uvicorn.run(app, host=settings.HOST, port=settings.PORT)
