@@ -1,11 +1,13 @@
 import asyncio
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.middleware.cors import CORSMiddleware
 
 from config import settings
-from database_connector import init_models
+from database_connector import init_models, get_session
+from models.ship import Ship
 
 app = FastAPI()
 
@@ -20,7 +22,11 @@ app.add_middleware(
 
 
 @app.get('/')
-async def app_root():
+async def app_root(session: AsyncSession = Depends(get_session)):
+
+    session.add(Ship(name="Победа"))
+    await session.commit()
+
     return {
         "status": "ok",
         "message": "pong",
