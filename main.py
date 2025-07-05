@@ -7,7 +7,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from config import settings
 from database_connector import init_models, get_session
-from models.ship import Ship
+from models import Ship, Room, RoomType
 
 app = FastAPI()
 
@@ -23,8 +23,11 @@ app.add_middleware(
 
 @app.get('/')
 async def app_root(session: AsyncSession = Depends(get_session)):
+    ship = Ship()
+    ship.rooms = {Room(type=RoomType.deck), Room(type=RoomType.deck), Room(type=RoomType.tweendeck)}
 
-    session.add(Ship(name="Победа"))
+    session.add(ship)
+
     await session.commit()
 
     return {

@@ -27,8 +27,7 @@ class Base(AsyncAttrs, DeclarativeBase):
 
 
 def load_models():
-    # from models import ship
-    ...
+    from models import Ship, Room, RoomStructureRecord
 
 
 engine = create_async_engine(settings.DATABASE_URL)
